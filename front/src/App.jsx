@@ -8,6 +8,8 @@ import {
   ChevronRight,
   Clock,
 } from 'lucide-react';
+import texture from './assets/Texture.jpg';
+
 
 const CLockInApp = () => {
   const [currentView, setCurrentView] = useState('login'); 
@@ -65,50 +67,64 @@ const CLockInApp = () => {
   };
 
   const LoginForm = () => (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md w-full space-y-8">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-8 font-roboto">Log In</h2>
-          <div className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Usuario:</label>
-              <input
-                type="text"
-                placeholder="usuario"
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Contraseña:</label>
-              <input
-                type="password"
-                placeholder="contraseña"
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <button
-              onClick={() => setCurrentView('calendar')}
-              style={{ backgroundColor: "#6C5DE1" }}
-              className="w-full text-white py-3 px-4 rounded-full font-medium hover:bg-purple-700 transition-colors"
-            >
-              Iniciar Sesión
-            </button>
-            <button
-              onClick={() => setCurrentView('signup')}
-              style={{ backgroundColor: "#edededff" }}
-              className="w-full text-gray-600 py-3 px-4 rounded-full hover:bg-gray-100 transition-colors"
-            >
-              Crear cuenta
-            </button>
+  <div
+    className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4"
+    style={{ backgroundImage: `url(${texture})` }}
+  >
+    <div className="absolute inset-0 bg-white opacity-90"></div>
+
+    {/* Content */}
+    <div className="relative max-w-md w-full space-y-8">
+      <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-md">
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-8 font-roboto">
+          Log In
+        </h2>
+        <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Usuario:</label>
+            <input
+              type="text"
+              placeholder="usuario"
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Contraseña:</label>
+            <input
+              type="password"
+              placeholder="contraseña"
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <button
+            onClick={() => setCurrentView('calendar')}
+            style={{ backgroundColor: "#6C5DE1" }}
+            className="w-full text-white py-3 px-4 rounded-full font-medium hover:bg-purple-700 transition-colors"
+          >
+            Iniciar Sesión
+          </button>
+          <button
+            onClick={() => setCurrentView('signup')}
+            style={{ backgroundColor: "#edededff" }}
+            className="w-full text-gray-600 py-3 px-4 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            Crear cuenta
+          </button>
         </div>
       </div>
     </div>
-  );
+  </div>
+);
+
 
   const SignupForm = () => (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md w-full space-y-8">
+    <div
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4"
+      style={{ backgroundImage: `url(${texture})` }}
+    >
+      <div className="absolute inset-0 bg-white opacity-90"></div>
+
+      <div className="relative max-w-md w-full space-y-8">
         <div className="bg-white p-8 rounded-lg shadow-md">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Crear Cuenta</h2>
           <div className="space-y-6">
@@ -423,31 +439,40 @@ const CLockInApp = () => {
       {/* Reminder Dialog */}
       {reminderDialog.open && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold">
-                {reminderDialog.mode === 'create' ? 'Crear Recordatorio' : 'Editar Recordatorio'}
-              </h3>
-              <button onClick={closeReminderDialog} className="text-gray-400 hover:text-gray-600">
-                <X size={24} />
+          <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
+            {/* Encabezado centrado */}
+            <div className="flex justify-center items-center relative mb-6">
+              <button 
+                onClick={closeReminderDialog} 
+                style={{ backgroundColor: "#4C7BAE" }}
+                className="absolute right-0 top-0 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-blue-600"
+              >
+                <X size={18} />
               </button>
             </div>
-            
-            <div className="space-y-4">
+
+            <div className="flex justify-center items-center relative mb-6">
+              <h3 className="text-2xl text-center font-roboto font-semibold">
+                {reminderDialog.mode === 'create' ? 'Crear Recordatorio' : 'Editar Recordatorio'}
+              </h3>
+            </div>
+
+            {/* Contenido del formulario con más espacio vertical */}
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Descripción:</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Descripción:</label>
                 <input
                   type="text"
                   placeholder="descripción"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Día:</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Día:</label>
                   <input
                     type="number"
                     placeholder="día"
@@ -455,28 +480,27 @@ const CLockInApp = () => {
                     max={getDaysInMonth(currentDate)}
                     value={formData.day}
                     onChange={(e) => setFormData({ ...formData, day: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Hora:</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Hora:</label>
                   <input
                     type="time"
-                    placeholder="hora"
                     value={formData.time}
                     onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Prioridad:</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Prioridad:</label>
                   <select
                     value={formData.priority}
                     onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">Seleccionar...</option>
                     <option value="Baja">Baja</option>
@@ -486,11 +510,11 @@ const CLockInApp = () => {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Categoría:</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Categoría:</label>
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="">Seleccionar...</option>
                     <option value="Recordatorio">Recordatorio</option>
@@ -500,11 +524,13 @@ const CLockInApp = () => {
                 </div>
               </div>
             </div>
-            
-            <div className="flex justify-end mt-6">
+
+            {/* Botón centrado */}
+            <div className="flex justify-center mt-8">
               <button
                 onClick={handleSaveReminder}
-                className="bg-purple-600 text-white px-6 py-2 rounded-full font-medium hover:bg-purple-700 transition-colors"
+                style={{ backgroundColor: "#6C5DE1" }}
+                className="text-white px-8 py-3 rounded-full font-medium hover:bg-purple-700 transition-colors"
               >
                 {reminderDialog.mode === 'create' ? 'Crear' : 'Editar'}
               </button>
@@ -512,6 +538,7 @@ const CLockInApp = () => {
           </div>
         </div>
       )}
+
 
       {/* Delete Dialog */}
       {deleteDialog.open && (
@@ -524,13 +551,14 @@ const CLockInApp = () => {
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setDeleteDialog({ open: false, reminder: null })}
-                className="px-4 py-2 text-gray-600 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
+                className="px-4 py-2 text-gray-600 bg-gray-200 rounded-full hover:bg-gray-300 transition-colors"
               >
                 Cancelar
               </button>
               <button
                 onClick={handleDeleteReminder}
-                className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+                style={{ backgroundColor: "#6C5DE1" }}
+                className="px-4 py-2 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors"
               >
                 Aceptar
               </button>
