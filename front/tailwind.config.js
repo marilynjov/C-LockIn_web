@@ -4,7 +4,13 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        adlam: ['"ADLaM Display"', 'sans-serif'],
+        lato: ['Lato', 'sans-serif'],
+
+      },
+    },
   },
   plugins: [],
 }
