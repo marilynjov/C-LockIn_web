@@ -8,7 +8,7 @@ export default {
       fontFamily: {
         adlam: ['"ADLaM Display"', 'sans-serif'],
         lato: ['Lato', 'sans-serif'],
-
+        roboto: ['Roboto', 'sans-serif'],
       },
     },
   },

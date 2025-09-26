@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 const CLockInApp = () => {
-  const [currentView, setCurrentView] = useState('calendar'); // 'login', 'signup', 'calendar'
+  const [currentView, setCurrentView] = useState('login'); 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [reminderDialog, setReminderDialog] = useState({ open: false, mode: 'create', reminder: null });
   const [deleteDialog, setDeleteDialog] = useState({ open: false, reminder: null });
@@ -26,10 +26,10 @@ const CLockInApp = () => {
   
   // Data
   const [reminders, setReminders] = useState([
-    { id: 1, description: 'Financial Advisor Meeting', day: 7, month: 8, year: 2025, time: '', priority: 'Importante', category: 'Recordatorio' },
-    { id: 2, description: 'Interview w/ Figma', day: 8, month: 8, year: 2025, time: '', priority: 'Importante', category: 'Recordatorio' },
-    { id: 3, description: 'Reunión', day: 8, month: 8, year: 2025, time: '10:00 am', priority: 'Martes', category: 'Alarma' },
-    { id: 4, description: "Ashley's Choir Recital", day: 12, month: 8, year: 2025, time: '', priority: 'Urgente', category: 'Recordatorio' }
+    { id: 1, description: 'Financial Advisor Meeting', day: 7, month: 9, year: 2025, time: '', priority: 'Importante', category: 'Recordatorio' },
+    { id: 2, description: 'Interview w/ Figma', day: 8, month: 9, year: 2025, time: '', priority: 'Importante', category: 'Recordatorio' },
+    { id: 3, description: 'Reunión', day: 8, month: 9, year: 2025, time: '10:00 am', priority: 'Martes', category: 'Alarma' },
+    { id: 4, description: "Ashley's Choir Recital", day: 12, month: 9, year: 2025, time: '', priority: 'Urgente', category: 'Recordatorio' }
   ]);
 
   // Helper functions for date calculations
@@ -68,7 +68,7 @@ const CLockInApp = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-md w-full space-y-8">
         <div className="bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Log In</h2>
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-8 font-roboto">Log In</h2>
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Usuario:</label>
@@ -88,13 +88,15 @@ const CLockInApp = () => {
             </div>
             <button
               onClick={() => setCurrentView('calendar')}
-              className="w-full bg-purple-600 text-white py-3 px-4 rounded-full font-medium hover:bg-purple-700 transition-colors"
+              style={{ backgroundColor: "#6C5DE1" }}
+              className="w-full text-white py-3 px-4 rounded-full font-medium hover:bg-purple-700 transition-colors"
             >
               Iniciar Sesión
             </button>
             <button
               onClick={() => setCurrentView('signup')}
-              className="w-full text-gray-600 py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+              style={{ backgroundColor: "#edededff" }}
+              className="w-full text-gray-600 py-3 px-4 rounded-full hover:bg-gray-100 transition-colors"
             >
               Crear cuenta
             </button>
@@ -144,13 +146,15 @@ const CLockInApp = () => {
             </div>
             <button
               onClick={() => setCurrentView('calendar')}
+              style={{ backgroundColor: "#6C5DE1" }}
               className="w-full bg-purple-600 text-white py-3 px-4 rounded-full font-medium hover:bg-purple-700 transition-colors"
             >
               Crear Cuenta
             </button>
             <button
               onClick={() => setCurrentView('login')}
-              className="w-full text-gray-600 py-2 px-4 rounded-md hover:bg-gray-100 transition-colors"
+              style={{ backgroundColor: "#edededff" }}
+              className="w-full text-gray-600 py-3 px-4 rounded-full hover:bg-gray-100 transition-colors"
             >
               Iniciar Sesión
             </button>
@@ -272,6 +276,31 @@ const CLockInApp = () => {
     });
   };
 
+  const handleSaveReminder = () => {
+    if (reminderDialog.mode === 'create') {
+      const newReminder = {
+        id: Date.now(),
+        ...formData,
+        day: parseInt(formData.day),
+        month: currentDate.getMonth() + 1,
+        year: currentDate.getFullYear()
+      };
+      setReminders([...reminders, newReminder]);
+    } else {
+      setReminders(reminders.map(r => 
+        r.id === reminderDialog.reminder.id 
+          ? { ...r, ...formData, day: parseInt(formData.day) }
+          : r
+      ));
+    }
+    closeReminderDialog();
+  };
+
+  const handleDeleteReminder = () => {
+    setReminders(reminders.filter(r => r.id !== deleteDialog.reminder.id));
+    setDeleteDialog({ open: false, reminder: null });
+  };
+
   const CalendarView = () => (
     <div className="flex h-screen">
       {/* Recordatorios */}
@@ -321,10 +350,10 @@ const CLockInApp = () => {
         </div>
 
         <button
-          onClick={() => {}}
-          className="w-full mt-6 bg-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-purple-700 transition-colors flex items-center justify-center"
+          onClick={() => openReminderDialog('create')}
+          style={{ backgroundColor: "#6C5DE1" }}
+          className="w-full mt-6 text-white py-3 px-4 rounded-full font-medium hover:bg-purple-700 transition-colors flex items-center justify-center"
         >
-          <Plus size={18} className="mr-2" />
           Crear Recordatorio
         </button>
       </div>
@@ -391,6 +420,124 @@ const CLockInApp = () => {
       {currentView === 'signup' && <SignupForm />}
       {currentView === 'calendar' && <CalendarView />}
 
+      {/* Reminder Dialog */}
+      {reminderDialog.open && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-xl font-semibold">
+                {reminderDialog.mode === 'create' ? 'Crear Recordatorio' : 'Editar Recordatorio'}
+              </h3>
+              <button onClick={closeReminderDialog} className="text-gray-400 hover:text-gray-600">
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Descripción:</label>
+                <input
+                  type="text"
+                  placeholder="descripción"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Día:</label>
+                  <input
+                    type="number"
+                    placeholder="día"
+                    min="1"
+                    max={getDaysInMonth(currentDate)}
+                    value={formData.day}
+                    onChange={(e) => setFormData({ ...formData, day: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Hora:</label>
+                  <input
+                    type="time"
+                    placeholder="hora"
+                    value={formData.time}
+                    onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Prioridad:</label>
+                  <select
+                    value={formData.priority}
+                    onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Baja">Baja</option>
+                    <option value="Normal">Normal</option>
+                    <option value="Importante">Importante</option>
+                    <option value="Urgente">Urgente</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Categoría:</label>
+                  <select
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Recordatorio">Recordatorio</option>
+                    <option value="Evento">Evento</option>
+                    <option value="Reunión">Reunión</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-end mt-6">
+              <button
+                onClick={handleSaveReminder}
+                className="bg-purple-600 text-white px-6 py-2 rounded-full font-medium hover:bg-purple-700 transition-colors"
+              >
+                {reminderDialog.mode === 'create' ? 'Crear' : 'Editar'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Dialog */}
+      {deleteDialog.open && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm">
+            <h3 className="text-xl font-semibold mb-4">Eliminar Recordatorio</h3>
+            <p className="text-gray-600 mb-6">
+              ¿Está seguro que desea eliminar el recordatorio?
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setDeleteDialog({ open: false, reminder: null })}
+                className="px-4 py-2 text-gray-600 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleDeleteReminder}
+                className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+              >
+                Aceptar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
